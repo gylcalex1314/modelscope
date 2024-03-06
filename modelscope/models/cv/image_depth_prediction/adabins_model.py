@@ -25,8 +25,8 @@ class DepthPrediction(TorchModel):
         super().__init__(model_dir, *args, **kwargs)
         
         model = unet_adaptive_bins.UnetAdaptiveBins.build(n_bins=256, min_val=1e-3, max_val=10)
-        # model, _, _ = model_io.load_checkpoint(os.path.join(model_dir, ModelFile.TORCH_MODEL_BIN_FILE))
-        model, _, _ = model_io.load_checkpoint('/home/gyalex/projects/test/monocular_depth/pretrained/AdaBins_nyu.pt', model)
+        model, _, _ = model_io.load_checkpoint(os.path.join(model_dir, 'pytorch_model.pt'), model)
+        
         model.eval()
         model.to('cuda:0')
         
@@ -35,19 +35,13 @@ class DepthPrediction(TorchModel):
         logger.info('Depth prediction model, pipeline init')
 
     def forward(self, Inputs):
-        print('a')
-        print(Inputs['images'].shape)
-        
         bin_centers, pred = self.model(Inputs['images'])
         Inputs['depth'] = pred
-
-        print(pred.shape)
     
         return Inputs
     
     def postprocess(self, Inputs):
         inferHelper = infer.InferenceHelper()
-        print('s1')
         
         depth_result = inferHelper.postprocess(Inputs['depth'])
         
@@ -55,7 +49,7 @@ class DepthPrediction(TorchModel):
         # plt.show()
         # cv2.waitKey(0)
         
-        print('s2')
+        # print('s2')
 
         results = {OutputKeys.DEPTHS: depth_result}
         return results

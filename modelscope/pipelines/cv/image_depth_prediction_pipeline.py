@@ -45,7 +45,6 @@ class ImageDepthPredictionPipeline(Pipeline):
         image = transform(image).unsqueeze(0).float().to('cuda:0')
         data = {'images': image}
         print('finish preprocess')
-        print(image.shape)
 
         return data
     
