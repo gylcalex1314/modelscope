@@ -61,6 +61,7 @@ class CVTasks(object):
     indoor_layout_estimation = 'indoor-layout-estimation'
     video_depth_estimation = 'video-depth-estimation'
     panorama_depth_estimation = 'panorama-depth-estimation'
+    image_depth_prediction = 'image-depth-prediction'
     portrait_matting = 'portrait-matting'
     universal_matting = 'universal-matting'
     text_driven_segmentation = 'text-driven-segmentation'
